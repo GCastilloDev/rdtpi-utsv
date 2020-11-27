@@ -136,7 +136,6 @@ export default {
         await this.registarUsuarioDB(this.uid, this.dataAdmin);
         this.$refs.form.reset();
         this.$emit("usuarioCreado");
-        this.cerrar();
       } catch (error) {
         this.authError = true;
         this.messageError = error.message;

@@ -3,11 +3,15 @@ import { db } from '../common/Firebase';
 export const firebaseMixin = {
   methods: {
     async registarUsuarioDB(uid, user) {
+      let userData = user;
+      delete userData.password;
+      userData.uid = uid;
+
       try {
         await db
           .collection('users')
-          .doc(uid)
-          .set(user);
+          // .doc(uid)
+          .add(userData);
       } catch (error) {
         console.log(error);
       }
@@ -20,7 +24,10 @@ export const firebaseMixin = {
           .get();
 
         users.forEach((e) => {
-          this.users.push(e.data());
+          let user = e.data();
+          user.id = e.id;
+          console.log(user);
+          this.users.push(user);
         });
       } catch (error) {
         console.log(error);

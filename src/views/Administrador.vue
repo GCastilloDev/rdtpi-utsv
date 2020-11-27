@@ -19,7 +19,7 @@
       v-if="showNuevoAdmin"
       :showNuevoAdmin="showNuevoAdmin"
       @cerrar="showNuevoAdmin = false"
-      @usuarioCreado="getUsersByRol('admin')"
+      @usuarioCreado="usuarioCreado"
     />
   </v-container>
 </template>
@@ -51,6 +51,13 @@ export default {
       { text: "Género", value: "genero" },
     ],
   }),
+  methods: {
+    usuarioCreado() {
+      this.users = [];
+      this.getUsersByRol("admin");
+      this.showNuevoAdmin = false;
+    },
+  },
 };
 </script>
 
