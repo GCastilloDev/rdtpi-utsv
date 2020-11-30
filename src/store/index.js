@@ -5,8 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: '',
+    user: sessionStorage.usuario
+      ? JSON.parse(sessionStorage.usuario).nombre
+      : '',
     loading: false,
+    sesionActiva: sessionStorage.usuario ? true : false,
+    isOpen: false,
   },
   mutations: {
     SET_USER(state, payload) {
@@ -14,6 +18,9 @@ export default new Vuex.Store({
     },
     SET_LOADING(state, payload) {
       state.loading = payload;
+    },
+    SET_SESION(state, payload) {
+      state.sesionActiva = payload;
     },
   },
   actions: {

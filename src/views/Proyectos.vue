@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <h1>Docentes <v-icon right color="green dark-1">mdi-teach</v-icon></h1>
+    <h1>
+      Proyectos <v-icon right color="green dark-1">mdi-folder-multiple</v-icon>
+    </h1>
     <v-row>
       <v-col cols="8">
         <v-text-field
@@ -20,23 +22,23 @@
           color="green"
           dark
           block
-          @click="showNuevoDocente = true"
+          @click="showNuevoProyecto = true"
         >
-          Agregar docente</v-btn
+          Agregar proyecto</v-btn
         >
       </v-col>
       <v-col cols="12">
         <v-data-table
           :headers="headers"
-          :items="users"
+          :items="proyects"
           :search="search"
           class="elevation-1"
         >
           <template v-slot:item.actions="{ item }">
-            <v-btn @click="editarUsuario(item)" icon color="blue">
+            <!-- <v-btn @click="editarUsuario(item)" icon color="blue">
               <v-icon> mdi-account-edit </v-icon>
-            </v-btn>
-            <v-btn @click="eliminarUsuario(item)" icon color="red">
+            </v-btn> -->
+            <v-btn @click="eliminarProyecto(item)" icon color="red">
               <v-icon> mdi-trash-can</v-icon>
             </v-btn>
           </template>
@@ -44,18 +46,18 @@
       </v-col>
     </v-row>
 
-    <nuevoDocente
-      v-if="showNuevoDocente"
-      :showNuevoDocente="showNuevoDocente"
-      @cerrar="showNuevoDocente = false"
-      @usuarioCreado="usuarioCreado"
+    <nuevoProyecto
+      v-if="showNuevoProyecto"
+      :showNuevoProyecto="showNuevoProyecto"
+      @cerrar="showNuevoProyecto = false"
+      @proyectoCreado="usuarioCreado"
     />
 
-    <editarDocente
-      v-if="showEditarDocente"
-      :showEditarDocente="showEditarDocente"
+    <editarAlumno
+      v-if="showEditarAlumno"
+      :showEditarAlumno="showEditarAlumno"
       :data="data"
-      @cerrar="showEditarDocente = false"
+      @cerrar="showEditarAlumno = false"
       @usuarioActualizado="usuarioCreado"
     />
   </v-container>
@@ -67,17 +69,17 @@ export default {
   name: "Docentes",
   mixins: [firebaseMixin],
   mounted() {
-    this.getUsersByRol("docente");
+    this.getProyects();
   },
   components: {
-    nuevoDocente: () => import("../components/docente/nuevoDocente"),
-    editarDocente: () => import("../components/docente/editarDocente"),
+    nuevoProyecto: () => import("../components/proyecto/nuevoProyecto"),
+    editarAlumno: () => import("../components/alumno/editarAlumno"),
   },
   data: () => ({
-    showEditarDocente: false,
-    showNuevoDocente: false,
+    showEditarAlumno: false,
+    showNuevoProyecto: false,
     search: "",
-    users: [],
+    proyects: [],
     headers: [
       {
         text: "Nombre",
@@ -85,13 +87,9 @@ export default {
         sortable: false,
         value: "nombre",
       },
-      { text: "Apellido paterno", value: "apellidoPaterno" },
-      { text: "Apellido materno", value: "apellidoMaterno" },
-      { text: "Correo", value: "correo" },
-      { text: "Género", value: "genero" },
-      { text: "Abscripcion", value: "carreraAbscripcion" },
-      { text: "Grado", value: "gradoAcademico" },
-      { text: "Puesto", value: "puesto" },
+      { text: "Nivel", value: "nivel" },
+      { text: "% avance", value: "avance" },
+      { text: "Generación", value: "generacion" },
       { text: "Acciones", value: "actions" },
     ],
     data: {},
@@ -99,24 +97,24 @@ export default {
   methods: {
     usuarioCreado() {
       this.users = [];
-      this.getUsersByRol("docente");
-      this.showNuevoDocente = false;
-      this.showEditarDocente = false;
+      this.getUsersByRol("alumno");
+      this.showNuevoProyecto = false;
+      this.showEditarAlumno = false;
     },
     editarUsuario(usuario) {
       this.data = Object.assign({}, usuario);
-      this.showEditarDocente = true;
+      this.showEditarAlumno = true;
     },
-    async eliminarUsuario(usuario) {
+    async eliminarProyecto(proyecto) {
       const response = confirm(
-        `¿Seguro que desea eliminar a ${usuario.nombre}? Esta acción no se podrá deshacer.`
+        `¿Seguro que desea eliminar el proyecto ${proyecto.nombre}? Esta acción no se podrá deshacer.`
       );
 
       try {
         if (response) {
-          this.users = await [];
-          await this.deleteUserWhitEmailPassword(usuario);
-          this.getUsersByRol("docente");
+          this.proyects = await [];
+          await this.deleteProyect(proyecto);
+          this.getProyects();
         }
       } catch (error) {
         console.log(error);

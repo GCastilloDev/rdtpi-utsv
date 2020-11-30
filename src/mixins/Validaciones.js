@@ -16,5 +16,9 @@ export const validacionesMixin = {
         (v && v.length >= 6) ||
         'La contraseña debe de tener 6 o más caracteres',
     ],
+    integrantesRules: [
+      (v) => v.length > 0 || 'Campo requerido',
+      (v) => v.length < 4 || 'Solo se permiten 3 integrantes',
+    ],
   }),
 };

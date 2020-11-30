@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Docentes <v-icon right color="green dark-1">mdi-teach</v-icon></h1>
+    <h1>Alumnos <v-icon right color="green dark-1">mdi-school</v-icon></h1>
     <v-row>
       <v-col cols="8">
         <v-text-field
@@ -20,9 +20,9 @@
           color="green"
           dark
           block
-          @click="showNuevoDocente = true"
+          @click="showNuevoAlumno = true"
         >
-          Agregar docente</v-btn
+          Agregar alumno</v-btn
         >
       </v-col>
       <v-col cols="12">
@@ -44,18 +44,18 @@
       </v-col>
     </v-row>
 
-    <nuevoDocente
-      v-if="showNuevoDocente"
-      :showNuevoDocente="showNuevoDocente"
-      @cerrar="showNuevoDocente = false"
+    <nuevoAlumno
+      v-if="showNuevoAlumno"
+      :showNuevoAlumno="showNuevoAlumno"
+      @cerrar="showNuevoAlumno = false"
       @usuarioCreado="usuarioCreado"
     />
 
-    <editarDocente
-      v-if="showEditarDocente"
-      :showEditarDocente="showEditarDocente"
+    <editarAlumno
+      v-if="showEditarAlumno"
+      :showEditarAlumno="showEditarAlumno"
       :data="data"
-      @cerrar="showEditarDocente = false"
+      @cerrar="showEditarAlumno = false"
       @usuarioActualizado="usuarioCreado"
     />
   </v-container>
@@ -67,15 +67,15 @@ export default {
   name: "Docentes",
   mixins: [firebaseMixin],
   mounted() {
-    this.getUsersByRol("docente");
+    this.getUsersByRol("alumno");
   },
   components: {
-    nuevoDocente: () => import("../components/docente/nuevoDocente"),
-    editarDocente: () => import("../components/docente/editarDocente"),
+    nuevoAlumno: () => import("../components/alumno/nuevoAlumno"),
+    editarAlumno: () => import("../components/alumno/editarAlumno"),
   },
   data: () => ({
-    showEditarDocente: false,
-    showNuevoDocente: false,
+    showEditarAlumno: false,
+    showNuevoAlumno: false,
     search: "",
     users: [],
     headers: [
@@ -87,11 +87,13 @@ export default {
       },
       { text: "Apellido paterno", value: "apellidoPaterno" },
       { text: "Apellido materno", value: "apellidoMaterno" },
-      { text: "Correo", value: "correo" },
+      { text: "Edad", value: "edad" },
       { text: "Género", value: "genero" },
-      { text: "Abscripcion", value: "carreraAbscripcion" },
+      { text: "Correo", value: "correo" },
+      { text: "Matrícula", value: "matricula" },
       { text: "Grado", value: "gradoAcademico" },
-      { text: "Puesto", value: "puesto" },
+      { text: "Grupo", value: "grupo" },
+      { text: "Generación", value: "generacion" },
       { text: "Acciones", value: "actions" },
     ],
     data: {},
@@ -99,13 +101,13 @@ export default {
   methods: {
     usuarioCreado() {
       this.users = [];
-      this.getUsersByRol("docente");
-      this.showNuevoDocente = false;
-      this.showEditarDocente = false;
+      this.getUsersByRol("alumno");
+      this.showNuevoAlumno = false;
+      this.showEditarAlumno = false;
     },
     editarUsuario(usuario) {
       this.data = Object.assign({}, usuario);
-      this.showEditarDocente = true;
+      this.showEditarAlumno = true;
     },
     async eliminarUsuario(usuario) {
       const response = confirm(
@@ -114,9 +116,12 @@ export default {
 
       try {
         if (response) {
+          console.log("HOLAAA");
           this.users = await [];
+          console.log("Eliminare");
           await this.deleteUserWhitEmailPassword(usuario);
-          this.getUsersByRol("docente");
+          console.log("paseee");
+          this.getUsersByRol("alumno");
         }
       } catch (error) {
         console.log(error);

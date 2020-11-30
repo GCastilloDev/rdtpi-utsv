@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { auth } from "../common/Firebase";
+import { auth, db } from "../common/Firebase";
+import { mapMutations } from "vuex";
 
 export default {
   data: () => ({
@@ -84,17 +85,41 @@ export default {
     },
   }),
   methods: {
+    ...mapMutations(["SET_SESION"]),
     async auth() {
       try {
         const { user } = await auth.signInWithEmailAndPassword(
           this.formLogin.username,
           this.formLogin.password
         );
-        console.log(user);
+        await this.getUser(user.uid);
       } catch (error) {
         this.authError = true;
         this.messageError = error.message;
         console.log(error.message);
+      }
+    },
+    async getUser(uid) {
+      try {
+        console.log(uid);
+        const user = await db.collection("users").where("uid", "==", uid).get();
+
+        let usuarioRegistrado = user.docs[0].data();
+        delete usuarioRegistrado.password;
+
+        if (usuarioRegistrado.rol != "alumno") {
+          sessionStorage.setItem("usuario", JSON.stringify(usuarioRegistrado));
+          this.SET_SESION(true);
+          this.$store.state.isOpen = true;
+          this.$store.state.user = usuarioRegistrado.nombre;
+          this.$router.push("/");
+          return;
+        }
+
+        this.authError = true;
+        this.messageError = "No tienes autorización para entrar.";
+      } catch (error) {
+        console.log(error);
       }
     },
   },
