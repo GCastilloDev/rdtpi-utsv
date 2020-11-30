@@ -5,7 +5,6 @@
         <v-card-title class="headline"> Editar alumno </v-card-title>
         <v-card-text class="mt-3">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <pre>{{ data }}</pre>
             <v-row>
               <v-col cols="12" class="ma-0 pt-0 pb-0"
                 ><v-text-field

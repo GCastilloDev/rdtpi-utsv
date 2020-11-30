@@ -1,8 +1,5 @@
 <template>
-  <v-img
-    height="100vh"
-    src="http://sayune.com/image/?path=archivos/imagenes/8525_image_contacto.jpg"
-  >
+  <v-img height="100vh" src="../assets/fondo.jpg">
     <v-container class="justify-center" fill-height fluid>
       <v-row justify="center" justify-lg="center">
         <v-col cols="12" lg="4" sm="6">
