@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Administrador <v-icon right color="green dark-1">mdi-ninja</v-icon></h1>
+    <h1>Docentes <v-icon right color="green dark-1">mdi-teach</v-icon></h1>
     <v-row>
       <v-col cols="8">
         <v-text-field
@@ -20,9 +20,9 @@
           color="green"
           dark
           block
-          @click="showNuevoAdmin = true"
+          @click="showNuevoDocente = true"
         >
-          Agregar administrador</v-btn
+          Agregar docente</v-btn
         >
       </v-col>
       <v-col cols="12">
@@ -44,18 +44,18 @@
       </v-col>
     </v-row>
 
-    <nuevoAdmin
-      v-if="showNuevoAdmin"
-      :showNuevoAdmin="showNuevoAdmin"
-      @cerrar="showNuevoAdmin = false"
+    <nuevoDocente
+      v-if="showNuevoDocente"
+      :showNuevoDocente="showNuevoDocente"
+      @cerrar="showNuevoDocente = false"
       @usuarioCreado="usuarioCreado"
     />
 
-    <editarAdmin
-      v-if="showEditarAdmin"
-      :showEditarAdmin="showEditarAdmin"
-      :dataAdmin="dataAdmin"
-      @cerrar="showEditarAdmin = false"
+    <editarDocente
+      v-if="showEditarDocente"
+      :showEditarDocente="showEditarDocente"
+      :data="data"
+      @cerrar="showEditarDocente = false"
       @usuarioActualizado="usuarioCreado"
     />
   </v-container>
@@ -67,15 +67,15 @@ export default {
   name: "Administrador",
   mixins: [firebaseMixin],
   mounted() {
-    this.getUsersByRol("admin");
+    this.getUsersByRol("docente");
   },
   components: {
-    nuevoAdmin: () => import("../components/administrador/nuevoAdmin"),
-    editarAdmin: () => import("../components/administrador/editarAdmin"),
+    nuevoDocente: () => import("../components/docente/nuevoDocente"),
+    editarDocente: () => import("../components/docente/editarDocente"),
   },
   data: () => ({
-    showEditarAdmin: false,
-    showNuevoAdmin: false,
+    showEditarDocente: false,
+    showNuevoDocente: false,
     search: "",
     users: [],
     headers: [
@@ -89,21 +89,23 @@ export default {
       { text: "Apellido materno", value: "apellidoMaterno" },
       { text: "Correo", value: "correo" },
       { text: "Género", value: "genero" },
+      { text: "Abscripcion", value: "carreraAbscripcion" },
+      { text: "Grado", value: "gradoAcademico" },
+      { text: "Puesto", value: "puesto" },
       { text: "Acciones", value: "actions" },
     ],
-    dataAdmin: {},
+    data: {},
   }),
   methods: {
     usuarioCreado() {
       this.users = [];
-      this.getUsersByRol("admin");
-      this.showNuevoAdmin = false;
-      this.showEditarAdmin = false;
+      this.getUsersByRol("docente");
+      this.showNuevoDocente = false;
+      this.showEditarDocente = false;
     },
     editarUsuario(usuario) {
-      this.dataAdmin = Object.assign({}, usuario);
-      this.showEditarAdmin = true;
-      console.log(usuario);
+      this.data = Object.assign({}, usuario);
+      this.showEditarDocente = true;
     },
     async eliminarUsuario(usuario) {
       const response = confirm(
@@ -114,7 +116,7 @@ export default {
         if (response) {
           this.users = await [];
           await this.deleteUserWhitEmailPassword(usuario);
-          this.getUsersByRol("admin");
+          this.getUsersByRol("docente");
         }
       } catch (error) {
         console.log(error);

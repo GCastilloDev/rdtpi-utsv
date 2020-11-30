@@ -46,7 +46,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link>
+      <v-list-item link :to="{ name: 'Docentes' }">
         <v-list-item-icon>
           <v-icon>mdi-teach</v-icon>
         </v-list-item-icon>
