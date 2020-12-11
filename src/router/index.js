@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -8,54 +8,63 @@ const ifAuthenticated = (to, from, next) => {
   if (sessionStorage.usuario) {
     next();
   } else {
-    next('/login');
+    next("/login");
   }
 };
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "/",
+    name: "Home",
     component: Home,
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: () =>
-      import(/* webpackChunkName: "login" */ '../views/Login.vue'),
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
   },
   {
-    path: '/admin',
-    name: 'Admin',
+    path: "/admin",
+    name: "Admin",
     component: () =>
-      import(/* webpackChunkName: "admin" */ '../views/Administrador.vue'),
+      import(/* webpackChunkName: "admin" */ "../views/Administrador.vue"),
     beforeEnter: ifAuthenticated,
   },
   {
-    path: '/docentes',
-    name: 'Docentes',
+    path: "/docentes",
+    name: "Docentes",
     component: () =>
-      import(/* webpackChunkName: "docentes" */ '../views/Docentes.vue'),
+      import(/* webpackChunkName: "docentes" */ "../views/Docentes.vue"),
     beforeEnter: ifAuthenticated,
   },
   {
-    path: '/alumnos',
-    name: 'Alumnos',
+    path: "/alumnos",
+    name: "Alumnos",
     component: () =>
-      import(/* webpackChunkName: "alumnos" */ '../views/Alumnos.vue'),
+      import(/* webpackChunkName: "alumnos" */ "../views/Alumnos.vue"),
     beforeEnter: ifAuthenticated,
   },
   {
-    path: '/proyectos',
-    name: 'Proyectos',
+    path: "/proyectos",
+    name: "Proyectos",
     component: () =>
-      import(/* webpackChunkName: "proyectos" */ '../views/Proyectos.vue'),
+      import(/* webpackChunkName: "proyectos" */ "../views/Proyectos.vue"),
+    beforeEnter: ifAuthenticated,
+  },
+  {
+    path: "/estadisticas",
+    name: "Estadisticas",
+    component: () =>
+      import(
+        /* webpackChunkName: "estadisticas" */ "../views/Estadisticas.vue"
+      ),
     beforeEnter: ifAuthenticated,
   },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes,
 });
 

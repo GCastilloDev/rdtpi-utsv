@@ -1,4 +1,3 @@
-import { mapState } from 'vuex';
   <template>
   <v-navigation-drawer absolute app temporary right v-model="show">
     <template v-slot:prepend>
@@ -66,6 +65,16 @@ import { mapState } from 'vuex';
 
         <v-list-item-content>
           <v-list-item-title>Administrador</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item link :to="{ name: 'Estadisticas' }">
+        <v-list-item-icon>
+          <v-icon>mdi-chart-timeline-variant</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Estadisticas</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 

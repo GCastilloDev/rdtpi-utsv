@@ -19,7 +19,10 @@
         ></v-img>
       </v-col>
       <v-col cols="12" v-if="proyects.length <= 0" class="mt-10">
-        <h2 class="text-center">No tenemos proyectos registrados <span style='font-size:30px;'>&#128549;</span></h2>
+        <h2 class="text-center">
+          No tenemos proyectos registrados
+          <span style="font-size: 30px">&#128549;</span>
+        </h2>
         <div class="d-flex justify-center">
           <v-img
             max-width="50vh"
@@ -35,7 +38,7 @@
       <v-col cols="4" v-if="proyects.length > 0">
         <v-card v-for="proyect in proyects" :key="proyect.id">
           <v-img height="200" :src="proyect.imagenUrl"></v-img>
-          <v-card-title>Cafe Badilico</v-card-title>
+          <v-card-title>{{ proyect.nombre }}</v-card-title>
           <v-card-text>
             <div class="subtitle-1">{{ proyect.nivel }}</div>
             <div>

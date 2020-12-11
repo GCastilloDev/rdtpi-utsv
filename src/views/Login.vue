@@ -67,8 +67,8 @@ export default {
     messageError: "",
     valid: true,
     formLogin: {
-      username: "admin@utsv.edu.mx",
-      password: "123456",
+      username: "tic17190390.fgonzalez@alumnos.utsv.edu.mx",
+      password: "Abcd123$",
     },
     rules: {
       email: [
