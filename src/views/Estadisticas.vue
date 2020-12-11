@@ -34,22 +34,46 @@
           >
         </v-card>
       </v-col>
+      <v-col cols="12">
+        <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import { db } from "../common/Firebase";
+import { GChart } from "vue-google-charts";
 export default {
   name: "Estadisticas",
   async mounted() {
     await this.getProyects();
     await this.getUsers();
+    const dataChart = [
+      "Estadisticas",
+      this.proyectos,
+      this.alumnos,
+      this.maestros,
+    ];
+    this.chartData.push(dataChart);
+  },
+  components: {
+    GChart,
   },
   data: () => ({
     proyectos: 0,
     alumnos: 0,
     maestros: 0,
+    chartData: [
+      ["", "Proyectos", "Alumnos", "Maestros"],
+      //   ["Estadisticas", 10, 10, 3],
+    ],
+    chartOptions: {
+      chart: {
+        title: "Company Performaassasnce",
+        subtitle: "Sales, Expenses, and Profit: 2014-2017",
+      },
+    },
   }),
   methods: {
     async getUsers() {
